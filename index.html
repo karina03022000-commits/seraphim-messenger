@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a080d">
+<link rel="manifest" href="manifest.json">
+<title>SERAPHIM</title>
+<style>
+:root{--bg:#0a080d;--panel:#151019;--panel2:#1d1420;--line:#3c293b;--text:#eee5ed;--muted:#9b839d;--rose:#6d354e;--accent:#c6a7c8;--red:#8d263f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;min-height:100dvh}button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.app{max-width:520px;margin:auto;height:100dvh;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0,#241725 0%,#0a080d 52%);border-left:1px solid #241a27;border-right:1px solid #241a27}
+header{padding:18px 18px 12px;border-bottom:1px solid var(--line);background:#100c13e8}
+.brand{font-size:23px;letter-spacing:5px;color:#dfc9e1}.tag{font-size:9px;letter-spacing:2.4px;color:var(--muted);margin-top:5px}
+.toolbar{display:flex;gap:8px;padding:11px}.toolbar input{flex:1;min-width:0;background:#1a121c;border:1px solid var(--line);padding:10px 12px;border-radius:10px;outline:none}.toolbar button,.ghost{border:1px solid var(--line);background:#1b131d;border-radius:10px;padding:10px;color:#c6a8c6}
+.content{flex:1;overflow:auto;padding-bottom:6px}.tabs{display:flex;border-top:1px solid var(--line);background:#110d14;padding:6px 4px calc(7px + env(safe-area-inset-bottom));justify-content:space-around}.tabs button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px}.tabs button.active{color:#dfc5df}.tabs b{font-size:18px;font-weight:normal}
+.sectionlabel{font-size:10px;letter-spacing:2px;color:#987d98;padding:14px 14px 5px}
+.chatrow{display:flex;gap:12px;align-items:center;padding:13px 14px;border-bottom:1px solid #2a1d2c;cursor:pointer}.avatar{width:49px;height:49px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;border:1px solid #6c4b70;background:radial-gradient(#49304c,#1a111c);font-size:22px}.chatrow .info{flex:1;min-width:0}.chatrow .name{font-size:14px}.preview{font-size:11px;color:#99839a;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{font-size:10px;color:#92768f;align-self:flex-start;padding-top:4px}
+.empty{text-align:center;padding:50px 22px;color:#917b91;font-size:13px;line-height:1.7}.empty .sigil{font-size:35px;margin-bottom:10px;color:#bda4c0}
+.screen{display:none;height:100%;flex-direction:column}.screen.active{display:flex}.chathead{display:flex;align-items:center;gap:10px;padding:11px;border-bottom:1px solid var(--line)}.back{border:0;background:transparent;color:var(--accent);font-size:23px;padding:4px 8px}.chathead .avatar{width:38px;height:38px;font-size:17px}.headinfo{flex:1}.headname{font-size:14px}.headstatus{font-size:10px;color:var(--muted);margin-top:3px}.headactions{display:flex;gap:3px}.headactions button{background:none;border:0;color:#c0a1bf;padding:6px;font-size:17px}
+.messages{flex:1;overflow:auto;padding:13px;display:flex;flex-direction:column;gap:10px}.day{text-align:center;color:#826a85;font-size:9px;letter-spacing:2px;margin:8px}.bubble{max-width:83%;padding:11px 12px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.in{align-self:flex-start;background:#211824;border:1px solid #38273a;border-radius:3px 14px 14px 14px}.out{align-self:flex-end;background:#402432;border:1px solid #6a3b52;border-radius:14px 3px 14px 14px}.time{font-size:9px;color:#ad8ba8;text-align:right;margin-top:5px}.composer{display:flex;gap:7px;padding:10px;background:#120e15;border-top:1px solid var(--line);padding-bottom:calc(10px + env(safe-area-inset-bottom))}.composer input{flex:1;min-width:0;background:#211825;border:1px solid #4a344c;border-radius:12px;padding:12px;outline:none}.send{border:1px solid #77506e;background:#4b2b43;color:#ead6e9;border-radius:12px;width:46px;font-size:17px}
+.card{margin:12px;border:1px solid var(--line);border-radius:13px;background:#17111a;padding:14px}.card h3{font-size:14px;font-weight:normal;color:#d6bbd7;margin:0 0 9px}.card p{font-size:12px;color:var(--muted);line-height:1.6;margin:0}.settingrow{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #2c2030;font-size:13px}.settingrow input{background:#1a121c;border:1px solid var(--line);border-radius:8px;padding:8px;max-width:140px}
+.fab{position:sticky;bottom:10px;float:right;margin:10px;border:1px solid #805776;background:#4a2b43;border-radius:50%;width:51px;height:51px;font-size:22px;color:#f0dded;box-shadow:0 4px 20px #0007}
+dialog{background:#18111b;color:var(--text);border:1px solid #67466a;border-radius:16px;width:min(90%,400px)}dialog::backdrop{background:#000a}dialog input{width:100%;margin:7px 0;background:#211825;border:1px solid var(--line);border-radius:9px;padding:11px}dialog button{border:1px solid var(--line);background:#3d263b;border-radius:9px;padding:10px;margin-top:7px}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">༺ SERAPHIM ༻</div><div class="tag">MESSENGER OF THE FALLEN HEAVEN</div></header>
+<div class="content">
+<section class="screen active" id="listScreen">
+<div class="toolbar"><input id="search" placeholder="Искать в переписках…"><button id="newChatBtn">✚</button></div>
+<div class="sectionlabel">✦ YOUR SANCTUARY</div><div id="chatList"></div>
+</section>
+<section class="screen" id="chatScreen">
+<div class="chathead"><button class="back" id="back">‹</button><div class="avatar" id="chatAvatar">🪽</div><div class="headinfo"><div class="headname" id="chatName">Friend</div><div class="headstatus">личная переписка</div></div><div class="headactions"><button title="Поиск" id="chatSearch">⌕</button><button title="Информация" id="chatInfo">☩</button></div></div>
+<div class="messages" id="messages"></div><div class="composer"><input id="messageInput" placeholder="Оставить послание…" maxlength="3000"><button class="send" id="sendBtn">➤</button></div>
+</section>
+<section class="screen" id="storiesScreen">
+<div class="sectionlabel">✦ STORIES · 24 HOURS</div><div class="card"><h3>☽ Истории</h3><p>В этой версии истории пока доступны как локальные заметки. Добавь свою запись.</p><button class="ghost" id="addStory">＋ Добавить историю</button></div><div id="stories"></div>
+</section>
+<section class="screen" id="friendsScreen">
+<div class="sectionlabel">✦ SOULS IN YOUR ORBIT</div><div id="friends"></div><div class="card"><h3>Добавить друга</h3><p>Пока друзья хранятся на этом устройстве. Для совместной переписки потребуется серверная версия.</p><button class="ghost" id="addFriend">＋ Добавить контакт</button></div>
+</section>
+<section class="screen" id="settingsScreen">
+<div class="sectionlabel">✦ SANCTUARY SETTINGS</div><div class="card"><h3>Профиль</h3><div class="settingrow">Никнейм <input id="nickname" placeholder="Your name"></div><div class="settingrow">Статус <input id="userStatus" placeholder="in another realm"></div><button class="ghost" id="saveProfile">Сохранить</button></div>
+<div class="card"><h3>Внешний вид</h3><p>Dark Angel · чернильный чёрный, бордо, серебро, лиловый.</p></div>
+<div class="card"><h3>Данные</h3><p>Чаты сохраняются локально на этом устройстве в браузере.</p><button class="ghost" id="export">Экспорт чатов</button><button class="ghost" id="clearData" style="margin-left:6px">Очистить данные</button></div>
+<div class="card"><h3>О приложении</h3><p>SERAPHIM · Private sanctuary for two souls.</p></div>
+</section>
+</div>
+<nav class="tabs">
+<button class="active" data-screen="listScreen"><b>✉</b>Чаты</button><button data-screen="storiesScreen"><b>☽</b>Истории</button><button data-screen="friendsScreen"><b>♧</b>Друзья</button><button data-screen="settingsScreen"><b>⚙</b>Настройки</button>
+</nav>
+</div>
+<dialog id="contactDialog"><form method="dialog"><h3 style="font-weight:normal;color:#d9bfd9">Добавить душу</h3><input id="contactName" placeholder="Имя друга" required><input id="contactEmoji" placeholder="Эмодзи, например 🪽" value="🪽"><button id="createContact" value="default">Создать чат</button><button value="cancel">Отмена</button></form></dialog>
+<script>
+const STORE='seraphim_local_v1';
+const seed=[{id:'sample',name:'My Fallen Angel',emoji:'🪽',messages:[{text:'Привет! Добро пожаловать в наш маленький мир.',mine:false,time:Date.now()-3600000},{text:'Теперь у нас есть своё место среди звёзд ☾',mine:true,time:Date.now()-1800000}]}];
+let data=JSON.parse(localStorage.getItem(STORE)||'null')||{contacts:seed,stories:[],profile:{nickname:'Wandering Soul',status:'in another realm'}};
+let active=null;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(STORE,JSON.stringify(data))}
+function switchScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchScreen(b.dataset.screen));
+function renderList(){
+ const list=$('chatList'),friends=$('friends');list.innerHTML='';friends.innerHTML='';
+ let term=$('search').value.toLowerCase();
+ data.contacts.forEach(c=>{
+ let last=c.messages.at(-1),text=last?.text||'Пока нет сообщений';
+ if(term&&!c.name.toLowerCase().includes(term)&&!text.toLowerCase().includes(term))return;
+ const row=document.createElement('div');row.className='chatrow';row.innerHTML=`<div class="avatar">${esc(c.emoji||'🪽')}</div><div class="info"><div class="name">${esc(c.name)}</div><div class="preview">${esc(text)}</div></div><div class="meta">${last?new Date(last.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'✧'}</div>`;
+ row.onclick=()=>openChat(c.id);list.appendChild(row);
+ const fr=row.cloneNode(true);fr.onclick=()=>openChat(c.id);friends.appendChild(fr);
+ });
+ if(!list.children.length)list.innerHTML='<div class="empty"><div class="sigil">🪽</div>Тишина в sanctuary.<br>Создай свой первый чат.</div>';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function openChat(id){active=data.contacts.find(c=>c.id===id);if(!active)return;$('chatName').textContent=active.name;$('chatAvatar').textContent=active.emoji||'🪽';renderMessages();switchScreen('chatScreen')}
+function renderMessages(){const m=$('messages');m.innerHTML='<div class="day">✦ PRIVATE SANCTUARY ✦</div>';active.messages.forEach(x=>{const b=document.createElement('div');b.className='bubble '+(x.mine?'out':'in');b.textContent=x.text;const t=document.createElement('div');t.className='time';t.textContent=new Date(x.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(x.mine?'  ✓✓':'');b.appendChild(t);m.appendChild(b)});m.scrollTop=m.scrollHeight}
+function send(){let v=$('messageInput').value.trim();if(!v||!active)return;active.messages.push({text:v,mine:true,time:Date.now()});save();$('messageInput').value='';renderMessages();renderList()}
+$('sendBtn').onclick=send;$('messageInput').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+$('back').onclick=()=>switchScreen('listScreen');
+$('search').oninput=renderList;
+$('chatSearch').onclick=()=>{let q=prompt('Поиск в текущем чате:');if(!q)return;let i=active.messages.findIndex(m=>m.text.toLowerCase().includes(q.toLowerCase()));if(i>=0){let els=$('messages').querySelectorAll('.bubble');els[i]?.scrollIntoView({behavior:'smooth',block:'center'});}else alert('Сообщение не найдено')};
+$('chatInfo').onclick=()=>alert(active.name+'\nСообщений: '+active.messages.length+'\n\nВ этой версии переписка хранится локально.');
+const dialog=$('contactDialog');$('newChatBtn').onclick=()=>dialog.showModal();$('addFriend').onclick=()=>dialog.showModal();
+$('createContact').onclick=e=>{e.preventDefault();let name=$('contactName').value.trim();if(!name)return;let c={id:crypto.randomUUID(),name,emoji:$('contactEmoji').value.trim()||'🪽',messages:[]};data.contacts.unshift(c);save();dialog.close();$('contactName').value='';renderList();openChat(c.id)};
+$('addStory').onclick=()=>{let text=prompt('Текст истории (виден только на этом устройстве):');if(!text)return;data.stories.unshift({text,time:Date.now()});save();renderStories()};
+function renderStories(){let s=$('stories');s.innerHTML='';data.stories.forEach(st=>{let card=document.createElement('div');card.className='card';card.innerHTML='<h3>☽ Your story</h3><p>'+esc(st.text)+'</p><p style="margin-top:8px">'+new Date(st.time).toLocaleString()+'</p>';s.appendChild(card)})}
+$('saveProfile').onclick=()=>{data.profile.nickname=$('nickname').value;data.profile.status=$('userStatus').value;save();alert('Профиль сохранён')};
+$('nickname').value=data.profile.nickname||'';$('userStatus').value=data.profile.status||'';
+$('export').onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='seraphim-chats.json';a.click();URL.revokeObjectURL(a.href)};
+$('clearData').onclick=()=>{if(confirm('Удалить все локальные переписки и настройки?')){localStorage.removeItem(STORE);location.reload()}};
+renderList();renderStories();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body></html>
